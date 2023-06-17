@@ -1,0 +1,237 @@
+\documentclass[uplatex]{jsarticle}
+%\documentclass[a4j]{ujarticle}
+\usepackage{resume}  % resume用スタイル
+\usepackage{udline}  % 下線用
+\usepackage{comment} % 複数行コメント
+
+\pagestyle{plain}
+
+\begin{document}
+\twocolumn[
+    \beginheader{平成31年度 コンピュータサイエンス学部 中間発表}{2019}{10}{24}{井上 研究室}
+    \title{\LaTeX の復習(2)}
+    \author{C0117999 井上 亮文 (Akifumi Inoue)}
+    \endheader
+]
+\vspace{3mm}
+
+%%ページ番号
+%\setcounter{page}{11}
+
+\section{はじめに}
+
+井上研では，卒業論文や修士論文，それらの学内発表時に配布するレジュメ等
+を\LaTeX で執筆する．このサンプルでは，\LaTeX の存在そのものを忘れた学
+生のために，\LaTeX の基本を軽く復習する．また，井上研流の図や表の書き方，
+井上研フォーマット独自のコマンド等についても解説する．以降の説明は，こ
+のファイルのソースも参照しながら読んで欲しい．
+
+\section{前提}
+
+\begin{itemize}
+\item 処理系 \texttt{uplatex, upbibtex}
+\item コンパイル等 \texttt{latexmk}
+\item 句点「．」読点「，」
+\end{itemize}
+
+\section{段落}
+
+本文は段落に分けて執筆する．
+段落とは，長い文章の中で，一つの主題をもってまとまった部分のことを指す．
+\LaTeX で新しい段落を作成する場合，直前に空行を1行以上挿入すればよい．
+
+これは1つ目の段落である．現在のテンプレートでは，段落の先頭は自動的に
+字下げされる．どうしても字下げをしたくない場合，段落の先頭に
+\verb|\noindent| を書く．
+
+% ここに空行が入っている
+
+これは2つ目の段落である．
+段落の中では，空行を挿入さえしなければ，改行位置は任意であ
+る．
+特に説明をする内容がないので，適当な文章を書いておく．
+
+文章中に\verb|\\|を挿入すると，\\
+このように\footnote{このサンプルの \LaTeX ソースを見てみよう}
+強制的に改行をすることができるが，
+字下げがされない．「\verb|\\|」はあくまで改行であって，
+段落ではない．
+\textbf{どうしても必要な場合を除いて使わないこと．}
+
+\section{フォント}
+
+文字に何らかの装飾を加えたい場合は，\tabref{tab:fonts}にあるコマンドを
+利用する．
+
+\underline{下線は改行に弱い}．行をまたいで下線を入れたり，線の種類を変
+更したりしたい場合は，独自コマンドの利用が必須である．
+
+よく使うのは強調に用いる\textbf{太字}だが，使いすぎると目立たなくなって
+しまう．本当に重要なところだけに利用するよう心がけよう．
+
+等幅フォントは，プログラムやコマンドの表記に利用することが多い．
+情報系の人の多くは，プロポーショナルフォントで出力されたソースコードを
+見ると憤死すると言われる．\texttt{public static void main(String[] args)}と
+public static void main(String[] args) のどちらが目に
+やさしいかは一目瞭然だろう．
+
+フォントサイズの変更コマンドは，表に示した以外にも多数存在する．
+実際の変更は，表内部の文字が大きすぎて境界からはみ出してしまう場合に
+小さくする方向で利用することがほとんどである．
+本文中のフォントサイズの変更は避けること．
+
+\begin{table}
+  \centering
+  % \scriptsize
+  \caption{フォントの変更に用いるコマンド}
+  \label{tab:fonts}
+  \begin{tabular}[t]{l|l|l}
+    \hline
+    \hline
+    コマンド & 意味 & 例\\
+    \hline
+    なし & 通常フォント & Dark Soul\\
+    \verb|\underline{}| & 下線 & \underline{Dark Soul}\\
+    \verb|\textbf{}| & 太字 & \textbf{Dark Soul}\\
+    \verb|\texttt{}| & 等幅 & \texttt{Dark Soul}\\
+    \verb|\textit{}| & イタリック & \textit{Dark Soul}\\
+    \verb|\textsl{}| & スラント & \textsl{Dark Soul}\\
+    \verb|\textsf{}| & サンセリフ & \textsf{Dark Soul}\\
+    \hline
+    \verb|\tiny{}| & 最小サイズ & \tiny{進捗}\\
+    \verb|\scriptsize{}| & 2番めに小さい& \scriptsize{進捗}\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{図}
+
+図の挿入には \texttt{figure} 環境の中で \verb|\includegraphics| を
+用いる．
+\texttt{[h]} の部分には図を挿入する位置とその優先順位を指定する．
+2カラムのレジュメでは \texttt{[ht]} もしくは \texttt{[tb]}，
+シングルカラムの卒論等では \texttt{[tb]} がよい．
+
+\verb|\includegraphics|を\verb|\fbox{}|で囲むと，図形の周囲に枠線を書く
+ことができる（\figref{fig:raster}）．図どうしの境界線をはっきりさせたい場合に
+用いると良いだろう．
+
+\begin{figure}[tb]
+  \centering
+  \fbox{
+    \includegraphics[width=3cm]{fig/leo.png}
+  }
+  \caption{ラスター画像の例．テキストの選択ができない．}
+  \label{fig:raster}
+\end{figure}
+
+\begin{figure}[tb]
+  % width や height で絶対的な大きさ指定をすることもできる
+  \centering
+  \includegraphics[width=0.4\linewidth]{fig/leo.pdf}
+  \caption{ベクター画像の例．テキストの選択ができる．}
+  \label{fig:vector}
+\end{figure}
+
+最新の \LaTeX\footnote{TeX Live 2015以上}を使っていれば，\LaTeX へ挿入
+する図の形式はなんでもよい．実際，このサンプル
+の\figref{fig:raster}はJPEG形式，\figref{fig:vector}はPDF形式の図であ
+る．ここは大学であり，ビジネスにありがちな過去のしがらみなどないのだから，
+最新で快適な環境をさっさと導入しよう．
+
+四角形や丸などを用いた（写真以外の）図形は，
+可能であればPDFやEPSなどのベクター形式で作成しよう．
+ベクター形式で保存しておけば，\figref{fig:vector}のように
+PDF上でテキストの選択や検索ができる他，\figref{fig:compare}の
+ように拡大縮小処理にも強い．
+
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=0.6\linewidth]{fig/compare.pdf}
+  \caption{拡大時におけるラスター形式(左)とベクター形式(右)の比較}
+  \label{fig:compare}
+\end{figure}
+
+\section{表}
+
+表は \verb|table| 環境の中に(1)キャプション，(2)ラベル，(3)\verb|tabular|環境，
+の3つを入れて作成する．
+
+井上研では，表の書き方に細かい指定がある．
+表のタイトルを指定する \verb|\caption{}| は \texttt{tabular} の上に書くこと．
+表の罫線は \tabref{tab:menu} のように最上部が二重線，列の見出しと要素の間は
+一重線であり，要素間および表の左右には罫線を引かない．
+
+\begin{table}[b]
+  \centering
+  \footnotesize
+  \caption{井上研食料庫のメニュー}
+  \label{tab:menu}
+  \begin{tabular}[h]{l|r|l}
+    \hline
+    \hline
+    商品名 & 価格(円) & 備考 \\
+    \hline
+    水 & 30 & \\
+    緑茶 & 70 & \\
+    HARIBO & 30 & 2つ\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{独自コマンド}
+
+\subsection{ \texttt{udline.sty} による下線}
+
+プリアンブルに \verb|\usepackage{udline}| と書けば，同梱され
+た \texttt{udline.sty} にある様々な下線コマンドを利用できるようになる
+（\tabref{tab:udline}）．\uc{二重線}や\Sl{打ち消し線}も引ける．\ul{複数
+  行にわたる下線も引けるようになるが，使いすぎは可読性を妨げるので，}ほ
+どほどがよい．
+
+
+\begin{table}[h]
+  \centering
+  \small
+  \caption{udline.styが提供するコマンド群}
+  \label{tab:udline}
+  \begin{tabular}[h]{l|p{4zw}|p{4zw}|p{4zw}|p{4zw}}
+    \hline
+    \hline
+     & 一本線・改行不可 & 飾り線・改行不可 & 一本線・改行可 & 飾り線・改行可\\
+    \hline
+    下線 & \verb|\unl{}| & \verb|\unc{}| & \verb|\ul{}| & \verb|\uc{}|\\
+    上線 & \verb|\ovl{}| & \verb|\ovc{}| & \verb|\ol{}| & \verb|\oc{}|\\
+    打ち消し線 & \verb|\sol{}| & \verb|\soc{}| & \verb|\Sl{}| & \verb|\Sc{}|\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\subsection{図表の参照}
+
+\LaTeX で図表を参照するときは \verb|\ref{}|を用いるが，このサンプルでは
+図の参照に \verb|\figref{}|を，表の参照に \verb|\tabref|を用いている．
+これら独自コマンドを用いると，図表の最初の参照部分だけが太字で表示され，
+2回目以降の参照では通常フォントで表示される．
+
+\subsection{コメント}
+
+\LaTeX では \verb|%| 以降の文字列はコメントとして扱われる\cite{翔悟17}．
+複数行をコメントアウトするには，各行の先頭に \verb|%| を打つ必要がある．
+
+このサンプルではプリアンブルで\verb|comment|パッケージを読み込んである．
+これにより， \verb|\begin{comment}|と\verb|end{comment}|で囲まれた範囲
+がコメントとして扱われるようになる．
+
+\subsection{その他}
+
+\texttt{okumacro}を使えば丸数字 \MARU{23} や \return も出せる．
+\ruby{進捗}{ゼロ}のようにルビも振ることができるが，これらが利用できるのは
+\texttt{(u)platex}系のエンジンに限られる．
+\texttt{xelatex}等では\texttt{bx...}パッケージを利用しよう．
+
+% biber + biblatex は日本語の問題で諦めた．従来通り bibtex を使う．
+\bibliographystyle{junsrt}    % 参考文献形式を junsrt に
+\bibliography{ref}            % 参考文献DBファイルを ref.bib に
+
+\end{document}
